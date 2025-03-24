@@ -3,7 +3,6 @@ package org.kohsuke.github;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.kohsuke.github.internal.Previews;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,6 +49,12 @@ public class GHBranch extends GitHubInteractiveObject {
      */
     public static class Commit {
 
+        /**
+         * Create default Commit instance
+         */
+        public Commit() {
+        }
+
         /** The sha. */
         String sha;
 
@@ -82,7 +87,6 @@ public class GHBranch extends GitHubInteractiveObject {
      *
      * @return true if the push to this branch is restricted via branch protection.
      */
-    @Preview(Previews.LUKE_CAGE)
     public boolean isProtected() {
         return protection;
     }
@@ -92,7 +96,6 @@ public class GHBranch extends GitHubInteractiveObject {
      *
      * @return API URL that deals with the protection of this branch.
      */
-    @Preview(Previews.LUKE_CAGE)
     public URL getProtectionUrl() {
         return GitHubClient.parseURL(protection_url);
     }
@@ -104,12 +107,8 @@ public class GHBranch extends GitHubInteractiveObject {
      * @throws IOException
      *             the io exception
      */
-    @Preview(Previews.LUKE_CAGE)
     public GHBranchProtection getProtection() throws IOException {
-        return root().createRequest()
-                .withPreview(Previews.LUKE_CAGE)
-                .setRawUrlPath(protection_url)
-                .fetch(GHBranchProtection.class);
+        return root().createRequest().setRawUrlPath(protection_url).fetch(GHBranchProtection.class);
     }
 
 	public PagedIterable<GHRule> getRules() throws IOException {
@@ -144,7 +143,6 @@ public class GHBranch extends GitHubInteractiveObject {
      * @return GHBranchProtectionBuilder for enabling protection
      * @see GHCommitStatus#getContext() GHCommitStatus#getContext()
      */
-    @Preview(Previews.LUKE_CAGE)
     public GHBranchProtectionBuilder enableProtection() {
         return new GHBranchProtectionBuilder(this);
     }

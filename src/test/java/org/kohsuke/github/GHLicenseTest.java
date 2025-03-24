@@ -41,6 +41,12 @@ import static org.hamcrest.Matchers.*;
 public class GHLicenseTest extends AbstractGitHubWireMockTest {
 
     /**
+     * Create default GHLicenseTest instance
+     */
+    public GHLicenseTest() {
+    }
+
+    /**
      * Basic test to ensure that the list of licenses from {@link GitHub#listLicenses()} is returned.
      *
      * @throws IOException
@@ -83,6 +89,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         GHLicense license = gitHub.getLicense(key);
         assertThat(license, notNullValue());
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
+        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
         assertThat("The HTML URL is correct",
                 license.getHtmlUrl(),
                 equalTo(new URL("http://choosealicense.com/licenses/mit/")));
@@ -111,6 +118,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         GHLicense license = repo.getLicense();
         assertThat("The license is populated", license, notNullValue());
         assertThat("The key is correct", license.getKey(), equalTo("mit"));
+        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),
@@ -129,6 +137,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         GHLicense license = repo.getLicense();
         assertThat("The license is populated", license, notNullValue());
         assertThat("The key is correct", license.getKey(), equalTo("mit"));
+        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),
@@ -148,6 +157,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         GHLicense license = repo.getLicense();
         assertThat("The license is populated", license, notNullValue());
         assertThat("The key is correct", license.getKey(), equalTo("apache-2.0"));
+        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("Apache-2.0")));
         assertThat("The name is correct", license.getName(), equalTo("Apache License 2.0"));
         assertThat("The URL is correct",
                 license.getUrl(),
@@ -181,6 +191,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         GHLicense license = repo.getLicense();
         assertThat("The license is populated", license, notNullValue());
         assertThat("The key is correct", license.getKey(), equalTo("mit"));
+        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),

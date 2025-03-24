@@ -5,7 +5,6 @@ import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.kohsuke.github.internal.EnumUtils;
-import org.kohsuke.github.internal.Previews;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +23,12 @@ import java.util.Locale;
 @SuppressFBWarnings(value = { "UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD", "URF_UNREAD_FIELD" },
         justification = "JSON API")
 public class GHCheckRun extends GHObject {
+
+    /**
+     * Create default GHCheckRun instance
+     */
+    public GHCheckRun() {
+    }
 
     /** The owner. */
     @JsonProperty("repository")
@@ -327,6 +332,13 @@ public class GHCheckRun extends GHObject {
      * @see <a href="https://developer.github.com/v3/checks/runs/#output-object">documentation</a>
      */
     public static class Output {
+
+        /**
+         * Create default Output instance
+         */
+        public Output() {
+        }
+
         private String title;
         private String summary;
         private String text;
@@ -397,7 +409,6 @@ public class GHCheckRun extends GHObject {
      *
      * @return a builder which you should customize, then call {@link GHCheckRunBuilder#create}
      */
-    @Preview(Previews.ANTIOPE)
     public @NonNull GHCheckRunBuilder update() {
         return new GHCheckRunBuilder(owner, getId());
     }

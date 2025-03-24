@@ -13,7 +13,15 @@ import java.util.Locale;
  * @author Kohsuke Kawaguchi
  * @see GHMyself#listOrgMemberships() GHMyself#listOrgMemberships()
  */
+@SuppressFBWarnings(value = { "UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD", "UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD" },
+        justification = "JSON API")
 public class GHMembership extends GitHubInteractiveObject {
+
+    /**
+     * Create default GHMembership instance
+     */
+    public GHMembership() {
+    }
 
     /** The url. */
     String url;

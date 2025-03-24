@@ -33,6 +33,12 @@ import static org.kohsuke.github.GHVerification.Reason.UNKNOWN_SIGNATURE_TYPE;
 public class GHRepositoryTest extends AbstractGitHubWireMockTest {
 
     /**
+     * Create default GHRepositoryTest instance
+     */
+    public GHRepositoryTest() {
+    }
+
+    /**
      * Gets the repository.
      *
      * @return the repository
@@ -45,6 +51,36 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
 
     private GHRepository getRepository(GitHub gitHub) throws IOException {
         return gitHub.getOrganization("hub4j-test-org").getRepository("github-api");
+    }
+
+    /**
+     * Test sync of fork
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    public void sync() throws IOException {
+        GHRepository r = getRepository();
+        GHBranchSync sync = r.sync("main");
+        assertThat(sync.getOwner().getFullName(), equalTo("hub4j-test-org/github-api"));
+        assertThat(sync.getMessage(), equalTo("Successfully fetched and fast-forwarded from upstream github-api:main"));
+        assertThat(sync.getMergeType(), equalTo("fast-forward"));
+        assertThat(sync.getBaseBranch(), equalTo("github-api:main"));
+    }
+
+    /**
+     * Test sync of repository not a fork
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test(expected = HttpException.class)
+    public void syncNoFork() throws IOException {
+        GHRepository r = getRepository();
+        GHBranchSync sync = r.sync("main");
+        fail("Should have thrown an exception");
+
     }
 
     /**
@@ -472,6 +508,31 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
     }
 
     /**
+     * List contributors.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    public void listContributorsAnon() throws IOException {
+        GHRepository r = gitHub.getOrganization("hub4j").getRepository("github-api");
+        int i = 0;
+        boolean kohsuke = false;
+
+        for (GHRepository.Contributor c : r.listContributors(true)) {
+            if (c.getType().equals("Anonymous")) {
+                assertThat(c.getContributions(), is(3));
+                kohsuke = true;
+            }
+            if (++i > 1) {
+                break;
+            }
+        }
+
+        assertThat(kohsuke, is(true));
+    }
+
+    /**
      * Gets the permission.
      *
      * @throws Exception
@@ -493,7 +554,8 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         }
 
         if (false) {
-            // can't easily test this; there's no private repository visible to the test user
+            // can't easily test this; there's no private repository visible to the test
+            // user
             r = gitHub.getOrganization("cloudbees").getRepository("private-repo-not-writable-by-me");
             try {
                 r.getPermission("jglick");
@@ -1159,7 +1221,8 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         assertThat(ghRefsWithPrefix.get(0).getRef(), equalTo(ghRefs.get(0).getRef()));
 
         // git/refs/heads/gh-pages
-        // passing a specific ref to listRefs will fail to parse due to returning a single item not an array
+        // passing a specific ref to listRefs will fail to parse due to returning a
+        // single item not an array
         try {
             ghRefs = repo.listRefs("heads/gh-pages").toList();
             fail();
@@ -1628,11 +1691,11 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         String owner = "hub4j-test-org";
         GHRepository repository = getRepository();
         assertThat(repository.getOwner().getLogin(), equalTo(owner));
-        assertThat(repository.getStargazersCount(), is(0));
+        assertThat(repository.getStargazersCount(), is(1));
         repository.star();
-        assertThat(repository.listStargazers2().toList().size(), is(1));
+        assertThat(repository.listStargazers2().toList().size(), is(2));
         repository.unstar();
-        assertThat(repository.listStargazers().toList().size(), is(0));
+        assertThat(repository.listStargazers().toList().size(), is(1));
     }
 
     /**
@@ -1821,6 +1884,83 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         search = repository.searchPullRequests().assigned(myself).mentions(myself);
         searchResult = search.list();
         this.verifySingleResult(searchResult, mergedPR);
+    }
+
+    /**
+     * Test getTopReferralPaths.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testGetTopReferralPaths() throws Exception {
+        GHRepository repository = gitHub.getRepository("ihrigb/node-doorbird");
+        List<GHRepositoryTrafficTopReferralPath> referralPaths = repository.getTopReferralPaths();
+        assertThat(referralPaths.size(), greaterThan(0));
+    }
+
+    /**
+     * Test getTopReferralSources.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testGetTopReferralSources() throws Exception {
+        GHRepository repository = gitHub.getRepository("ihrigb/node-doorbird");
+        List<GHRepositoryTrafficTopReferralSources> referralSources = repository.getTopReferralSources();
+        assertThat(referralSources.size(), greaterThan(0));
+    }
+
+    /**
+     * Test getRulesForBranch.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testGetRulesForBranch() throws Exception {
+        GHRepository repository = gitHub.getRepository("ihrigb/node-doorbird");
+        List<GHRepositoryRule> rules = repository.listRulesForBranch("main").toList();
+        assertThat(rules.size(), equalTo(3));
+
+        GHRepositoryRule rule = rules.get(0);
+        assertThat(rule.getType(), is(equalTo(GHRepositoryRule.Type.DELETION)));
+        assertThat(rule.getRulesetSourceType(), is(equalTo(GHRepositoryRule.RulesetSourceType.REPOSITORY)));
+        assertThat(rule.getRulesetSource(), is(equalTo("ihrigb/node-doorbird")));
+        assertThat(rule.getRulesetId(), is(equalTo(1170520L)));
+
+        rule = rules.get(1);
+        assertThat(rule.getType(), is(equalTo(GHRepositoryRule.Type.NON_FAST_FORWARD)));
+        assertThat(rule.getRulesetSourceType(), is(equalTo(GHRepositoryRule.RulesetSourceType.REPOSITORY)));
+        assertThat(rule.getRulesetSource(), is(equalTo("ihrigb/node-doorbird")));
+        assertThat(rule.getRulesetId(), is(equalTo(1170520L)));
+
+        rule = rules.get(2);
+        assertThat(rule.getType(), is(equalTo(GHRepositoryRule.Type.PULL_REQUEST)));
+        assertThat(rule.getRulesetSourceType(), is(equalTo(GHRepositoryRule.RulesetSourceType.REPOSITORY)));
+        assertThat(rule.getRulesetSource(), is(equalTo("ihrigb/node-doorbird")));
+        assertThat(rule.getRulesetId(), is(equalTo(1170520L)));
+
+        // check parameters
+        assertThat(rule.getParameter(GHRepositoryRule.Parameters.NEGATE).isPresent(), is(equalTo(false)));
+        assertThat(rule.getParameter(GHRepositoryRule.Parameters.REQUIRED_APPROVING_REVIEW_COUNT).get(),
+                is(equalTo(1)));
+        assertThat(rule.getParameter(GHRepositoryRule.Parameters.DISMISS_STALE_REVIEWS_ON_PUSH).get(),
+                is(equalTo(true)));
+        assertThat(rule.getParameter(GHRepositoryRule.Parameters.REQUIRE_CODE_OWNER_REVIEW).get(), is(equalTo(false)));
+    }
+
+    /**
+     * Test getVulnerabilityAlerts.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Test
+    public void testIsVulnerabilityAlertsEnabled() throws Exception {
+        GHRepository repository = gitHub.getRepository("ihrigb/node-doorbird");
+        assertThat(repository.isVulnerabilityAlertsEnabled(), is(true));
     }
 
     private void verifyEmptyResult(PagedSearchIterable<GHPullRequest> searchResult) {

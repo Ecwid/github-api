@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.kohsuke.github.internal.Previews.ANTIOPE;
-import static org.kohsuke.github.internal.Previews.GROOT;
-
 // TODO: Auto-generated Javadoc
 /**
  * A commit in a repository.
@@ -119,6 +116,12 @@ public class GHCommit {
      */
     public static class Stats {
 
+        /**
+         * Create default Stats instance
+         */
+        public Stats() {
+        }
+
         /** The deletions. */
         int total, additions, deletions;
     }
@@ -128,6 +131,12 @@ public class GHCommit {
      */
     @SuppressFBWarnings(value = "UWF_UNWRITTEN_FIELD", justification = "It's being initialized by JSON deserialization")
     public static class File {
+
+        /**
+         * Create default File instance
+         */
+        public File() {
+        }
 
         /** The status. */
         String status;
@@ -242,6 +251,12 @@ public class GHCommit {
      * The type Parent.
      */
     public static class Parent {
+
+        /**
+         * Create default Parent instance
+         */
+        public Parent() {
+        }
 
         /** The url. */
         @SuppressFBWarnings(value = "UUF_UNUSED_FIELD", justification = "We don't provide it in API now")
@@ -567,11 +582,9 @@ public class GHCommit {
      *
      * @return {@link PagedIterable} with the pull requests which contain this commit
      */
-    @Preview(GROOT)
     public PagedIterable<GHPullRequest> listPullRequests() {
         return owner.root()
                 .createRequest()
-                .withPreview(GROOT)
                 .withUrlPath(String.format("/repos/%s/%s/commits/%s/pulls", owner.getOwnerName(), owner.getName(), sha))
                 .toIterable(GHPullRequest[].class, item -> item.wrapUp(owner));
     }
@@ -583,11 +596,9 @@ public class GHCommit {
      * @throws IOException
      *             the io exception
      */
-    @Preview(GROOT)
     public PagedIterable<GHBranch> listBranchesWhereHead() throws IOException {
         return owner.root()
                 .createRequest()
-                .withPreview(GROOT)
                 .withUrlPath(String.format("/repos/%s/%s/commits/%s/branches-where-head",
                         owner.getOwnerName(),
                         owner.getName(),
@@ -677,7 +688,6 @@ public class GHCommit {
      * @throws IOException
      *             on error
      */
-    @Preview(ANTIOPE)
     public PagedIterable<GHCheckRun> getCheckRuns() throws IOException {
         return owner.getCheckRuns(sha);
     }

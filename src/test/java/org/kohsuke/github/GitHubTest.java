@@ -18,6 +18,12 @@ import static org.kohsuke.github.GHMarketplaceAccountType.ORGANIZATION;
 public class GitHubTest extends AbstractGitHubWireMockTest {
 
     /**
+     * Create default GitHubTest instance
+     */
+    public GitHubTest() {
+    }
+
+    /**
      * List users.
      *
      * @throws IOException
@@ -277,6 +283,8 @@ public class GitHubTest extends AbstractGitHubWireMockTest {
     public void getMeta() throws IOException {
         GHMeta meta = gitHub.getMeta();
         assertThat(meta.isVerifiablePasswordAuthentication(), is(true));
+        assertThat(meta.getSshKeyFingerprints().size(), equalTo(4));
+        assertThat(meta.getSshKeys().size(), equalTo(3));
         assertThat(meta.getApi().size(), equalTo(19));
         assertThat(meta.getGit().size(), equalTo(36));
         assertThat(meta.getHooks().size(), equalTo(4));

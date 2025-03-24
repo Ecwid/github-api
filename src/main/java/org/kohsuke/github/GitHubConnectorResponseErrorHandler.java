@@ -7,7 +7,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +27,17 @@ import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
  * @author Liam Newman
  */
 abstract class GitHubConnectorResponseErrorHandler {
+
+    /**
+     * The HTTP 429 Too Many Requests response status code indicates the user has sent too many requests in a given
+     * amount of time ("rate limiting").
+     *
+     * A Retry-After header might be included to this response indicating how long to wait before making a new request.
+     *
+     * Why is this hardcoded here? The HttpURLConnection class is missing the status codes above 415, so the constant
+     * needs to be sourced from elsewhere.
+     */
+    public static final int TOO_MANY_REQUESTS = 429;
 
     /**
      * Called to detect an error handled by this handler.
@@ -100,4 +116,38 @@ abstract class GitHubConnectorResponseErrorHandler {
             return false;
         }
     };
+
+    static void sleep(long waitMillis) throws IOException {
+        try {
+            Thread.sleep(waitMillis);
+        } catch (InterruptedException ex) {
+            throw (InterruptedIOException) new InterruptedIOException().initCause(ex);
+        }
+    }
+
+    static long parseWaitTime(String waitHeader, String dateHeader, long defaultMillis, long minimumMillis) {
+        if (waitHeader == null) {
+            return defaultMillis;
+        }
+
+        try {
+            return Math.max(minimumMillis, Duration.ofSeconds(Long.parseLong(waitHeader)).toMillis());
+        } catch (NumberFormatException nfe) {
+            // The wait header could be a number in seconds, or an http-date
+            // We know it was a date if we got a number format exception :)
+
+            // Try not to use ZonedDateTime.now(), because the local and remote server times may not be in sync
+            // Instead, we can take advantage of the Date field in the response to see what time the remote server
+            // thinks it is
+            String dateField = dateHeader;
+            ZonedDateTime now;
+            if (dateField != null) {
+                now = ZonedDateTime.parse(dateField, DateTimeFormatter.RFC_1123_DATE_TIME);
+            } else {
+                now = ZonedDateTime.now();
+            }
+            ZonedDateTime zdt = ZonedDateTime.parse(waitHeader, DateTimeFormatter.RFC_1123_DATE_TIME);
+            return Math.max(minimumMillis, ChronoUnit.MILLIS.between(now, zdt));
+        }
+    }
 }

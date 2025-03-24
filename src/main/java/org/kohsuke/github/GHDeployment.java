@@ -1,7 +1,5 @@
 package org.kohsuke.github;
 
-import org.kohsuke.github.internal.Previews;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -17,6 +15,13 @@ import java.util.Map;
  * @see GHRepository#getDeployment(long) GHRepository#getDeployment(long)
  */
 public class GHDeployment extends GHObject {
+
+    /**
+     * Create default GHDeployment instance
+     */
+    public GHDeployment() {
+    }
+
     private GHRepository owner;
 
     /** The sha. */
@@ -129,7 +134,6 @@ public class GHDeployment extends GHObject {
      * @return the original deployment environment
      * @deprecated until preview feature has graduated to stable
      */
-    @Preview(Previews.FLASH)
     public String getOriginalEnvironment() {
         return original_environment;
     }
@@ -150,7 +154,6 @@ public class GHDeployment extends GHObject {
      * @return the environment is transient
      * @deprecated until preview feature has graduated to stable
      */
-    @Preview(Previews.ANT_MAN)
     public boolean isTransientEnvironment() {
         return transient_environment;
     }
@@ -161,7 +164,6 @@ public class GHDeployment extends GHObject {
      * @return the environment is used by end-users directly
      * @deprecated until preview feature has graduated to stable
      */
-    @Preview(Previews.ANT_MAN)
     public boolean isProductionEnvironment() {
         return production_environment;
     }
@@ -225,8 +227,6 @@ public class GHDeployment extends GHObject {
     public PagedIterable<GHDeploymentStatus> listStatuses() {
         return root().createRequest()
                 .withUrlPath(statuses_url)
-                .withPreview(Previews.ANT_MAN)
-                .withPreview(Previews.FLASH)
                 .toIterable(GHDeploymentStatus[].class, item -> item.lateBind(owner));
     }
 

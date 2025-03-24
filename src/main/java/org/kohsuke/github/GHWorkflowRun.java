@@ -26,6 +26,12 @@ import static java.util.Objects.requireNonNull;
  */
 public class GHWorkflowRun extends GHObject {
 
+    /**
+     * Create default GHWorkflowRun instance
+     */
+    public GHWorkflowRun() {
+    }
+
     @JsonProperty("repository")
     private GHRepository owner;
 
@@ -36,6 +42,7 @@ public class GHWorkflowRun extends GHObject {
 
     private long runAttempt;
     private String runStartedAt;
+    private GHUser triggeringActor;
 
     private String htmlUrl;
     private String jobsUrl;
@@ -111,6 +118,16 @@ public class GHWorkflowRun extends GHObject {
      */
     public Date getRunStartedAt() throws IOException {
         return GitHubClient.parseDate(runStartedAt);
+    }
+
+    /**
+     * The actor which triggered the run.
+     *
+     * @return the triggering actor
+     */
+    @SuppressFBWarnings(value = { "EI_EXPOSE_REP" }, justification = "Expected behavior")
+    public GHUser getTriggeringActor() {
+        return triggeringActor;
     }
 
     /**
@@ -429,6 +446,13 @@ public class GHWorkflowRun extends GHObject {
      * The Class HeadCommit.
      */
     public static class HeadCommit {
+
+        /**
+         * Create default HeadCommit instance
+         */
+        public HeadCommit() {
+        }
+
         private String id;
         private String treeId;
         private String message;
@@ -502,6 +526,28 @@ public class GHWorkflowRun extends GHObject {
         IN_PROGRESS,
         /** The completed. */
         COMPLETED,
+        /** The action required. */
+        ACTION_REQUIRED,
+        /** The cancelled. */
+        CANCELLED,
+        /** The failure. */
+        FAILURE,
+        /** The neutral. */
+        NEUTRAL,
+        /** The skipped. */
+        SKIPPED,
+        /** The stale. */
+        STALE,
+        /** The success. */
+        SUCCESS,
+        /** The timed out. */
+        TIMED_OUT,
+        /** The requested. */
+        REQUESTED,
+        /** The waiting. */
+        WAITING,
+        /** The pending. */
+        PENDING,
         /** The unknown. */
         UNKNOWN;
 

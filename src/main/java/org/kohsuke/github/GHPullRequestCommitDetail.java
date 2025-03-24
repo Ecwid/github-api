@@ -40,6 +40,13 @@ import java.net.URL;
                 "URF_UNREAD_FIELD" },
         justification = "JSON API")
 public class GHPullRequestCommitDetail {
+
+    /**
+     * Create default GHPullRequestCommitDetail instance
+     */
+    public GHPullRequestCommitDetail() {
+    }
+
     private GHPullRequest owner;
     private GHCommitDetailAuthor author;
     private GHCommitDetailAuthor committer;
@@ -74,12 +81,23 @@ public class GHPullRequestCommitDetail {
      * @deprecated Use {@link GitUser}
      */
     public static class Authorship extends GitUser {
+        /**
+         * Create default Authorship instance
+         */
+        public Authorship() {
+        }
     }
 
     /**
      * The type Tree.
      */
     public static class Tree {
+
+        /**
+         * Create default Tree instance
+         */
+        public Tree() {
+        }
 
         /** The sha. */
         String sha;
@@ -110,6 +128,12 @@ public class GHPullRequestCommitDetail {
      * The type Commit.
      */
     public static class Commit {
+
+        /**
+         * Create default Commit instance
+         */
+        public Commit() {
+        }
 
         /** The author. */
         Authorship author;
@@ -190,6 +214,12 @@ public class GHPullRequestCommitDetail {
      * The type CommitPointer.
      */
     public static class CommitPointer {
+
+        /**
+         * Create default CommitPointer instance
+         */
+        public CommitPointer() {
+        }
 
         /** The sha. */
         String sha;

@@ -2,7 +2,6 @@ package org.kohsuke.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.kohsuke.github.internal.Previews;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +18,12 @@ import javax.annotation.Nonnull;
  * @see <a href="https://developer.github.com/v3/teams/discussions">GitHub Team Discussions</a>
  */
 public class GHDiscussion extends GHObject {
+
+    /**
+     * Create default GHDiscussion instance
+     */
+    public GHDiscussion() {
+    }
 
     private GHTeam team;
     private long number;
@@ -167,7 +172,6 @@ public class GHDiscussion extends GHObject {
      *
      * @return a {@link GHDiscussion.Updater}
      */
-    @Preview(Previews.SQUIRREL_GIRL)
     public GHDiscussion.Updater update() {
         return new GHDiscussion.Updater(this);
     }
@@ -177,7 +181,6 @@ public class GHDiscussion extends GHObject {
      *
      * @return a {@link GHDiscussion.Setter}
      */
-    @Preview(Previews.SQUIRREL_GIRL)
     public GHDiscussion.Setter set() {
         return new GHDiscussion.Setter(this);
     }
@@ -199,7 +202,7 @@ public class GHDiscussion extends GHObject {
     /**
      * A {@link GHLabelBuilder} that updates a single property per request
      *
-     * {@link #done()} is called automatically after the property is set.
+     * {@link GitHubRequestBuilderDone#done()} is called automatically after the property is set.
      */
     public static class Setter extends GHDiscussionBuilder<GHDiscussion> {
         private Setter(@Nonnull GHDiscussion base) {
@@ -211,7 +214,7 @@ public class GHDiscussion extends GHObject {
     /**
      * A {@link GHLabelBuilder} that allows multiple properties to be updated per request.
      *
-     * Consumer must call {@link #done()} to commit changes.
+     * Consumer must call {@link Updater#done()} to commit changes.
      */
     public static class Updater extends GHDiscussionBuilder<Updater> {
         private Updater(@Nonnull GHDiscussion base) {
@@ -223,7 +226,7 @@ public class GHDiscussion extends GHObject {
     /**
      * A {@link GHLabelBuilder} that creates a new {@link GHLabel}
      *
-     * Consumer must call {@link #done()} to create the new instance.
+     * Consumer must call {@link Creator#done()} to create the new instance.
      */
     public static class Creator extends GHDiscussionBuilder<Creator> {
 

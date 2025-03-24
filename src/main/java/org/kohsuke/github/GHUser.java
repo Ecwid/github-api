@@ -28,8 +28,6 @@ import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import java.io.IOException;
 import java.util.*;
 
-import static org.kohsuke.github.internal.Previews.INERTIA;
-
 // TODO: Auto-generated Javadoc
 /**
  * Represents an user of GitHub.
@@ -38,8 +36,17 @@ import static org.kohsuke.github.internal.Previews.INERTIA;
  */
 public class GHUser extends GHPerson {
 
+    /**
+     * Create default GHUser instance
+     */
+    public GHUser() {
+    }
+
     /** The ldap dn. */
     protected String ldap_dn;
+
+    /** The suspended_at */
+    private String suspendedAt;
 
     /**
      * Gets keys.
@@ -145,12 +152,8 @@ public class GHUser extends GHPerson {
      *
      * @return the paged iterable
      */
-    @Preview(INERTIA)
     public PagedIterable<GHProject> listProjects() {
-        return root().createRequest()
-                .withPreview(INERTIA)
-                .withUrlPath(getApiTailUrl("projects"))
-                .toIterable(GHProject[].class, null);
+        return root().createRequest().withUrlPath(getApiTailUrl("projects")).toIterable(GHProject[].class, null);
     }
 
     private PagedIterable<GHRepository> listRepositories(final String suffix) {
@@ -268,6 +271,18 @@ public class GHUser extends GHPerson {
     public Optional<String> getLdapDn() throws IOException {
         super.populate();
         return Optional.ofNullable(ldap_dn);
+    }
+
+    /**
+     * When was this user suspended?.
+     *
+     * @return updated date
+     * @throws IOException
+     *             on error
+     */
+    public Date getSuspendedAt() throws IOException {
+        super.populate();
+        return GitHubClient.parseDate(suspendedAt);
     }
 
     /**

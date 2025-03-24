@@ -29,6 +29,12 @@ import static org.junit.Assert.assertThrows;
  */
 public class AppTest extends AbstractGitHubWireMockTest {
 
+    /**
+     * Create default AppTest instance
+     */
+    public AppTest() {
+    }
+
     /** The Constant GITHUB_API_TEST_REPO. */
     static final String GITHUB_API_TEST_REPO = "github-api-test";
 
@@ -1061,6 +1067,19 @@ public class AppTest extends AbstractGitHubWireMockTest {
     }
 
     /**
+     * Test getEmails.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    @Test
+    public void testGetEmails() throws IOException {
+        List<String> emails = gitHub.getMyself().getEmails();
+        assertThat(emails.size(), equalTo(2));
+        assertThat(emails, contains("bitwiseman@gmail.com", "bitwiseman@users.noreply.github.com"));
+    }
+
+    /**
      * Test app.
      *
      * @throws IOException
@@ -1722,6 +1741,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
         }
         assertThat(found, is(true));
         gitHub.listNotifications().markAsRead();
+        gitHub.listNotifications().iterator().next();
     }
 
     /**

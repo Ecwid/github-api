@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.kohsuke.github.internal.Previews.MACHINE_MAN;
-
 // TODO: Auto-generated Javadoc
 /**
  * A Github App.
@@ -21,6 +19,12 @@ import static org.kohsuke.github.internal.Previews.MACHINE_MAN;
  * @see GitHub#getApp() GitHub#getApp()
  */
 public class GHApp extends GHObject {
+
+    /**
+     * Create default GHApp instance
+     */
+    public GHApp() {
+    }
 
     private GHUser owner;
     private String name;
@@ -201,6 +205,22 @@ public class GHApp extends GHObject {
     }
 
     /**
+     * Obtains all the installation requests associated with this app.
+     * <p>
+     * You must use a JWT to access this endpoint.
+     *
+     * @return a list of App installation requests
+     * @see <a href=
+     *      "https://docs.github.com/en/rest/apps/apps?apiVersion=2022-11-28#list-installation-requests-for-the-authenticated-app">List
+     *      installation requests</a>
+     */
+    public PagedIterable<GHAppInstallationRequest> listInstallationRequests() {
+        return root().createRequest()
+                .withUrlPath("/app/installation-requests")
+                .toIterable(GHAppInstallationRequest[].class, null);
+    }
+
+    /**
      * Obtains all the installations associated with this app.
      * <p>
      * You must use a JWT to access this endpoint.
@@ -208,7 +228,6 @@ public class GHApp extends GHObject {
      * @return a list of App installations
      * @see <a href="https://developer.github.com/v3/apps/#list-installations">List installations</a>
      */
-    @Preview(MACHINE_MAN)
     public PagedIterable<GHAppInstallation> listInstallations() {
         return listInstallations(null);
     }
@@ -223,9 +242,8 @@ public class GHApp extends GHObject {
      * @return a list of App installations since a given time.
      * @see <a href="https://developer.github.com/v3/apps/#list-installations">List installations</a>
      */
-    @Preview(MACHINE_MAN)
     public PagedIterable<GHAppInstallation> listInstallations(final Date since) {
-        Requester requester = root().createRequest().withPreview(MACHINE_MAN).withUrlPath("/app/installations");
+        Requester requester = root().createRequest().withUrlPath("/app/installations");
         if (since != null) {
             requester.with("since", GitHubClient.printDate(since));
         }
@@ -244,10 +262,8 @@ public class GHApp extends GHObject {
      *             on error
      * @see <a href="https://developer.github.com/v3/apps/#get-an-installation">Get an installation</a>
      */
-    @Preview(MACHINE_MAN)
     public GHAppInstallation getInstallationById(long id) throws IOException {
         return root().createRequest()
-                .withPreview(MACHINE_MAN)
                 .withUrlPath(String.format("/app/installations/%d", id))
                 .fetch(GHAppInstallation.class);
     }
@@ -265,10 +281,8 @@ public class GHApp extends GHObject {
      * @see <a href="https://developer.github.com/v3/apps/#get-an-organization-installation">Get an organization
      *      installation</a>
      */
-    @Preview(MACHINE_MAN)
     public GHAppInstallation getInstallationByOrganization(String name) throws IOException {
         return root().createRequest()
-                .withPreview(MACHINE_MAN)
                 .withUrlPath(String.format("/orgs/%s/installation", name))
                 .fetch(GHAppInstallation.class);
     }
@@ -288,10 +302,8 @@ public class GHApp extends GHObject {
      * @see <a href="https://developer.github.com/v3/apps/#get-a-repository-installation">Get a repository
      *      installation</a>
      */
-    @Preview(MACHINE_MAN)
     public GHAppInstallation getInstallationByRepository(String ownerName, String repositoryName) throws IOException {
         return root().createRequest()
-                .withPreview(MACHINE_MAN)
                 .withUrlPath(String.format("/repos/%s/%s/installation", ownerName, repositoryName))
                 .fetch(GHAppInstallation.class);
     }
@@ -308,10 +320,8 @@ public class GHApp extends GHObject {
      *             on error
      * @see <a href="https://developer.github.com/v3/apps/#get-a-user-installation">Get a user installation</a>
      */
-    @Preview(MACHINE_MAN)
     public GHAppInstallation getInstallationByUser(String name) throws IOException {
         return root().createRequest()
-                .withPreview(MACHINE_MAN)
                 .withUrlPath(String.format("/users/%s/installation", name))
                 .fetch(GHAppInstallation.class);
     }

@@ -3,8 +3,6 @@ package org.kohsuke.github;
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.kohsuke.github.internal.Previews.BAPTISTE;
-
 // TODO: Auto-generated Javadoc
 /**
  * Creates a repository.
@@ -96,7 +94,7 @@ public class GHCreateRepositoryBuilder extends GHRepositoryBuilder<GHCreateRepos
      * @return a builder to continue with building
      * @throws IOException
      *             In case of any networking error or error from the server.
-     * @deprecated Use {@link #isTemplate(boolean)} method instead
+     * @deprecated Use {@link GHCreateRepositoryBuilder#isTemplate(boolean)} method instead
      */
     @Deprecated
     public GHCreateRepositoryBuilder templateRepository(boolean enabled) throws IOException {
@@ -126,9 +124,8 @@ public class GHCreateRepositoryBuilder extends GHRepositoryBuilder<GHCreateRepos
      * @return a builder to continue with building
      * @see <a href="https://developer.github.com/v3/previews/">GitHub API Previews</a>
      */
-    @Preview(BAPTISTE)
     public GHCreateRepositoryBuilder fromTemplateRepository(String templateOwner, String templateRepo) {
-        requester.withPreview(BAPTISTE).withUrlPath("/repos/" + templateOwner + "/" + templateRepo + "/generate");
+        requester.withUrlPath("/repos/" + templateOwner + "/" + templateRepo + "/generate");
         return this;
     }
 
@@ -140,7 +137,6 @@ public class GHCreateRepositoryBuilder extends GHRepositoryBuilder<GHCreateRepos
      * @return a builder to continue with building
      * @see <a href="https://developer.github.com/v3/previews/">GitHub API Previews</a>
      */
-    @Preview(BAPTISTE)
     public GHCreateRepositoryBuilder fromTemplateRepository(GHRepository templateRepository) {
         Objects.requireNonNull(templateRepository, "templateRepository cannot be null");
         if (!templateRepository.isTemplate()) {

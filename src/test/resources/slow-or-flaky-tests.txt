@@ -1,6 +1,10 @@
 **/extras/**
+**/AbuseLimitHandlerTest
 **/GHRateLimitTest
 **/GHPullRequestTest
 **/RequesterRetryTest
 **/RateLimitCheckerTest
 **/RateLimitHandlerTest
+**/AotIntegrationTest
+**/ArchTests
+**/GHPullRequestMockTest
