@@ -1,5 +1,7 @@
 # Java API for GitHub
 
+This is a fork of git@github.com:hub4j/github-api.git
+
 ## How to make release a change
 1. Make a change in the code
 2. Update the version in the `pom.xml` file by incrementing the version number
