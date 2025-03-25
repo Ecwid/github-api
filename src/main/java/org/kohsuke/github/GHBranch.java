@@ -113,7 +113,6 @@ public class GHBranch extends GitHubInteractiveObject {
 
 	public PagedIterable<GHRule> getRules() throws IOException {
 		return root().createRequest()
-				.withPreview(Previews.LUKE_CAGE)
 				.withUrlPath(owner.getApiTailUrl("rules/branches/" + name))
 				.toIterable(GHRule[].class, GHRule::wrap);
 	}
