@@ -261,6 +261,16 @@ public class GHWorkflowJob extends GHObject {
     }
 
     /**
+     * Rerun the job run.
+     *
+     * @throws IOException
+     *             the io exception
+     */
+    public void rerun() throws IOException {
+        root().createRequest().method("POST").withUrlPath(getApiRoute(), "rerun").send();
+    }
+
+    /**
      * The Class Step.
      */
     public static class Step {
