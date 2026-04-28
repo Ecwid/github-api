@@ -3,6 +3,13 @@
 This is a fork of git@github.com:hub4j/github-api.git
 
 ## How to make release a change
+
+> **⚠️ The instructions below are outdated.** The `public-nexus.ecwid.com` Nexus
+> is no longer used by the main `Ecwid/ecwid` build — artifacts are now consumed
+> from GitHub Packages in [`Ecwid/thirdparty-packages`](https://github.com/Ecwid/thirdparty-packages).
+> See `build-logic/upload-thirdparty-lib/README.md` in the `Ecwid/ecwid` repo
+> for the current publishing workflow. This README needs to be updated.
+
 1. Make a change in the code
 2. Update the version in the `pom.xml` file by incrementing the version number
 3. Ensure it compiles and commit the change
