@@ -1,5 +1,7 @@
 package org.kohsuke.github;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
 import java.util.Collection;
 
 public class GHRule {
@@ -29,6 +31,7 @@ public class GHRule {
 
 	public enum RuleType {
 		commit_author_email_pattern,
+		copilot_code_review,
 		creation,
 		deletion,
 		merge_queue,
@@ -40,6 +43,13 @@ public class GHRule {
 		required_signatures,
 		required_status_checks,
 		update,
+
+		// Fallback for any rule type GitHub introduces in the future that this client
+		// does not yet know about. Combined with READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE
+		// in GitHubClient's ObjectMapper, this prevents deserialization failures on
+		// new rule types and lets callers safely ignore them.
+		@JsonEnumDefaultValue
+		unknown,
 	}
 
 	public static class Parameters {
