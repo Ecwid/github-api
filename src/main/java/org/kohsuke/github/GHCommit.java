@@ -350,40 +350,43 @@ public class GHCommit {
         return owner;
     }
 
-	/**
-	 * Gets commit verification.
-	 * @return
-	 */
-	public GHVerification getVerification() {
-		return commit.getVerification();
-	}
+    /**
+     * Gets commit verification.
+     *
+     * @return the commit verification
+     */
+    public GHVerification getVerification() {
+        return commit.getVerification();
+    }
 
-	/**
-	 * Gets commit author.
-	 * @return
-	 */
-	public GitUser getCommitAuthor() {
-		return commit.getAuthor();
-	}
+    /**
+     * Gets commit author.
+     *
+     * @return the commit author
+     */
+    public GitUser getCommitAuthor() {
+        return commit.getAuthor();
+    }
 
-	/**
-	 * Gets commit committer.
-	 * @return
-	 */
-	public GitUser getCommitCommitter() {
-		return commit.getCommitter();
-	}
+    /**
+     * Gets commit committer.
+     *
+     * @return the commit committer
+     */
+    public GitUser getCommitCommitter() {
+        return commit.getCommitter();
+    }
 
-	/**
-	 * Gets message.
-	 *
-	 * @return the commit message
-	 * @throws IOException
-	 *             the io exception
-	 */
-	public String getMessage() throws IOException {
-		return getCommitShortInfo().getMessage();
-	}
+    /**
+     * Gets message.
+     *
+     * @return the commit message
+     * @throws IOException
+     *             the io exception
+     */
+    public String getMessage() throws IOException {
+        return getCommitShortInfo().getMessage();
+    }
     /**
      * Gets lines changed.
      *

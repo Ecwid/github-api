@@ -111,11 +111,18 @@ public class GHBranch extends GitHubInteractiveObject {
         return root().createRequest().setRawUrlPath(protection_url).fetch(GHBranchProtection.class);
     }
 
-	public PagedIterable<GHRule> getRules() throws IOException {
-		return root().createRequest()
-				.withUrlPath(owner.getApiTailUrl("rules/branches/" + name))
-				.toIterable(GHRule[].class, GHRule::wrap);
-	}
+    /**
+     * Lists rules configured for this branch.
+     *
+     * @return branch rules
+     * @throws IOException
+     *             if an I/O error occurs
+     */
+    public PagedIterable<GHRule> getRules() throws IOException {
+        return root().createRequest()
+                .withUrlPath(owner.getApiTailUrl("rules/branches/" + name))
+                .toIterable(GHRule[].class, GHRule::wrap);
+    }
 
     /**
      * Gets sha 1.

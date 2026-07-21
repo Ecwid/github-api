@@ -469,14 +469,14 @@ public class GHPullRequestSearchBuilder extends GHSearchBuilder<GHPullRequest> {
         UPDATED,
         /** The relevance. */
         RELEVANCE,
-		/**
-		 * https://docs.github.com/en/enterprise-cloud@latest/search-github/getting-started-with-searching-on-github/sorting-search-results#sort-by-author-date
-		 */
-		AUTHOR_DATE,
-		/**
-		 * https://docs.github.com/en/enterprise-cloud@latest/search-github/getting-started-with-searching-on-github/sorting-search-results#sort-by-committer-date
-		 */
-		COMMITTER_DATE,
+        /**
+         * https://docs.github.com/en/enterprise-cloud@latest/search-github/getting-started-with-searching-on-github/sorting-search-results#sort-by-author-date
+         */
+        AUTHOR_DATE,
+        /**
+         * https://docs.github.com/en/enterprise-cloud@latest/search-github/getting-started-with-searching-on-github/sorting-search-results#sort-by-committer-date
+         */
+        COMMITTER_DATE,
     }
 
     private static class PullRequestSearchResult extends SearchResult<GHPullRequest> {
