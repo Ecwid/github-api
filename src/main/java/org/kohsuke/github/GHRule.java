@@ -1,6 +1,7 @@
 package org.kohsuke.github;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.Collection;
 
@@ -16,10 +17,12 @@ public class GHRule {
         this.type = type;
     }
 
+    @SuppressFBWarnings(value = { "EI_EXPOSE_REP" }, justification = "Expected behavior")
     public Parameters getParameters() {
         return parameters;
     }
 
+    @SuppressFBWarnings(value = { "EI_EXPOSE_REP2" }, justification = "Expected behavior")
     public void setParameters(Parameters parameters) {
         this.parameters = parameters;
     }
@@ -61,10 +64,12 @@ public class GHRule {
         private Integer check_response_timeout_minutes;
         private GroupingStrategy grouping_strategy;
 
+        @SuppressFBWarnings(value = { "EI_EXPOSE_REP" }, justification = "Expected behavior")
         public Collection<RequiredCheck> getRequiredStatusChecks() {
             return required_status_checks;
         }
 
+        @SuppressFBWarnings(value = { "EI_EXPOSE_REP2" }, justification = "Expected behavior")
         public void setRequiredStatusChecks(Collection<RequiredCheck> required_status_checks) {
             this.required_status_checks = required_status_checks;
         }
