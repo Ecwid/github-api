@@ -98,6 +98,7 @@ jobs:
         retention-days: 3
   codecov-upload:
     name: codecov-upload (Upload to codecov.io)
+    if: github.repository == 'hub4j/github-api'
     needs: test
     runs-on: ubuntu-latest
     steps:
