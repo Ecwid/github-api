@@ -1,7 +1,8 @@
 package org.kohsuke.github;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
+
+import javax.annotation.Nonnull;
 
 public class GHEnvironmentVariable extends GitHubInteractiveObject {
 
@@ -42,7 +43,9 @@ public class GHEnvironmentVariable extends GitHubInteractiveObject {
         this.updatedAt = updatedAt;
     }
 
-    static GHEnvironmentVariable read(@Nonnull GHRepository repository, @Nonnull String environment, @Nonnull String name) throws IOException {
+    static GHEnvironmentVariable read(@Nonnull GHRepository repository,
+            @Nonnull String environment,
+            @Nonnull String name) throws IOException {
         String url = "environments/" + environment + "/variables/" + name;
         GHEnvironmentVariable variable = repository.root()
                 .createRequest()
