@@ -35,4 +35,4 @@ Now the new version is available to be used in main project dependencies.
 [![codecov](https://codecov.io/gh/hub4j/github-api/branch/main/graph/badge.svg?token=j1jQqydZLJ)](https://codecov.io/gh/hub4j/github-api)
 
 
-See https://github-api.kohsuke.org/ for more details
+See https://hub4j.github.io/github-api/ for more details
