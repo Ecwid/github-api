@@ -100,7 +100,7 @@ public class EnumTest extends AbstractGitHubWireMockTest {
         assertThat(GHPullRequestReviewState.APPROVED.action(), equalTo(GHPullRequestReviewEvent.APPROVE.action()));
         assertThat(GHPullRequestReviewState.DISMISSED.toEvent(), nullValue());
 
-        assertThat(GHPullRequestSearchBuilder.Sort.values().length, equalTo(4));
+        assertThat(GHPullRequestSearchBuilder.Sort.values().length, equalTo(6));
 
         assertThat(GHReleaseBuilder.MakeLatest.values().length, equalTo(3));
 

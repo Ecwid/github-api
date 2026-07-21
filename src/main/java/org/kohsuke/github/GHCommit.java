@@ -353,7 +353,7 @@ public class GHCommit {
     /**
      * Gets commit verification.
      *
-     * @return
+     * @return the commit verification
      */
     public GHVerification getVerification() {
         return commit.getVerification();
@@ -362,7 +362,7 @@ public class GHCommit {
     /**
      * Gets commit author.
      *
-     * @return
+     * @return the commit author
      */
     public GitUser getCommitAuthor() {
         return commit.getAuthor();
@@ -371,7 +371,7 @@ public class GHCommit {
     /**
      * Gets commit committer.
      *
-     * @return
+     * @return the commit committer
      */
     public GitUser getCommitCommitter() {
         return commit.getCommitter();

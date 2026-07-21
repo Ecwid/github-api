@@ -68,7 +68,15 @@ public class GHPullRequestCommitDetail {
         String login;
 
         /**
+         * Creates a commit detail author instance.
+         */
+        public GHCommitDetailAuthor() {
+        }
+
+        /**
          * GitHub user login
+         *
+         * @return the GitHub user login
          */
         public String getLogin() {
             return login;
@@ -335,6 +343,7 @@ public class GHPullRequestCommitDetail {
     /**
      * Gets the GitHub user - author of the commit.
      *
+     * @return the commit author
      */
     public GHCommitDetailAuthor getAuthor() {
         return author;
@@ -343,6 +352,7 @@ public class GHPullRequestCommitDetail {
     /**
      * Gets the GitHub user - committer of the commit.
      *
+     * @return the commit committer
      */
     public GHCommitDetailAuthor getCommitter() {
         return committer;
